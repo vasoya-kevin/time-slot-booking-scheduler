@@ -25,9 +25,7 @@ export async function loginAction(formData: {
         }
 
         const result = await response.json();
-        console.log(result, "result")
-
-        // Store token in HTTP-only cookie (more secure)
+      
         if (result.token) {
             (await cookies()).set("token", result.token, {
                 httpOnly: true,

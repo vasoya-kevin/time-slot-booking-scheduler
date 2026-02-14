@@ -207,7 +207,6 @@ export const getUserBookingLinks = async (
 ) => {
     try {
         const userId = req.user!.userId;
-
         const result = await pool.query(
             `SELECT id, unique_code, created_at, is_active 
        FROM booking_links 

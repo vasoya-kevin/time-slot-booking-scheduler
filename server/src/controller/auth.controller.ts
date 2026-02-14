@@ -102,7 +102,9 @@ export const login = async (req: Request, res: Response) => {
 
 export const getProfile = async (req: AuthRequest, res: Response) => {
     try {
-        return res.status(200).json(req.user)
+        return res.status(200).json({
+            user: req.user
+        })
     } catch (error) {
         console.error('Profile error:', error);
         res.status(500).json({ error: 'Server error' });

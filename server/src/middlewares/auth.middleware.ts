@@ -22,9 +22,9 @@ export const authenticateToken = (
     }
 
     try {
-        const decoded = verifyJWT(token) as { userId: number; email: string, name: string };
+        const decoded = verifyJWT(token) as { user: { userId: number; email: string, name: string } };
 
-        req.user = decoded;
+        req.user = decoded.user;
         next();
     } catch (error) {
         return res.status(403).json({ error: 'Invalid or expired token' });

@@ -8,14 +8,11 @@ export default function proxy(request: NextRequest) {
         request.nextUrl.pathname.startsWith('/register');
 
     const isProtectedRoute = request.nextUrl.pathname.startsWith('/dashboard');
-    console.log(isProtectedRoute, "isProtectedRoute")
-
-    // Redirect to login if accessing protected route without token
+   
     if (isProtectedRoute && !token) {
         return NextResponse.redirect(new URL('/sign-in', request.url));
     }
 
-    // Redirect to dashboard if accessing auth pages with token
     if (isAuthPage && token) {
         return NextResponse.redirect(new URL('/dashboard', request.url));
     }
