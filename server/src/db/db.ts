@@ -1,14 +1,15 @@
 import { Pool } from 'pg';
 import dotenv from 'dotenv';
+import env from '#config/enviroment.config.ts';
 
 dotenv.config();
 
 const pool = new Pool({
-    host: process.env.DB_HOST || 'localhost',
-    port: parseInt(process.env.DB_PORT || '5432'),
-    database: process.env.DB_NAME || 'scheduling_db',
-    user: process.env.DB_USER || 'postgres',
-    password: process.env.DB_PASSWORD || 'postgres',
+    host: env.DB_HOST || 'localhost',
+    port: env.DB_PORT as number,
+    database: env.DB_NAME || 'time-slot-booking-scheduler',
+    user: env.DB_USER || 'postgres',
+    password: env.DB_PASSWORD || 'postgres',
     max: 20, // Maximum number of clients in the pool
     idleTimeoutMillis: 30000,
     connectionTimeoutMillis: 2000,
