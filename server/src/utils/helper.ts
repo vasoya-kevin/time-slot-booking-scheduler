@@ -12,7 +12,7 @@ export const comparePassword = async (password: string, hashPassword: string) =>
     return await bcrypt.compare(password, hashPassword);
 }
 
-export const generateJWT = (user: { userId: string | number, email: string }) => {
+export const generateJWT = (user: { userId: string | number, email: string, name: string }) => {
     const jwtToken = jwt.sign({ user }, SECRET_KEY, {
         expiresIn: "1 hour",
     });

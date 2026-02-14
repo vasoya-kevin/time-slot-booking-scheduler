@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import db from "#db/db.ts";
 import { AppError } from "#middlewares/error-handler.middleware.ts";
 import { comparePassword, generateJWT, passwordHashing } from "#utils/helper.ts";
+import { AuthRequest } from "#middlewares/auth.middleware.ts";
 
 /*
     Step For Register
@@ -33,12 +34,12 @@ export const register = async (
 
         const createUser = await db.query(
             "INSERT INTO users (email, password_hash, name) VALUES ($1, $2, $3) RETURNING id, email, name, created_at",
-            [email, password, name],
+            [email, hashPassword, name],
         );
 
         const user = createUser.rows[0];
 
-        const token = generateJWT({ userId: user.id, email: user.email });
+        const token = generateJWT({ userId: user.id, email: user.email, name: user.name });
 
         res.status(201).json({
             message: 'User registered successfully',
@@ -82,7 +83,7 @@ export const login = async (req: Request, res: Response) => {
             throw new AppError('Invalid email or password', 401);
         }
 
-        const token = generateJWT({ userId: user.id, email: user.email })
+        const token = generateJWT({ userId: user.id, email: user.email, name: user.name })
 
         res.json({
             message: 'Login successful',
@@ -97,3 +98,13 @@ export const login = async (req: Request, res: Response) => {
         console.log(error);
     }
 };
+
+
+export const getProfile = async (req: AuthRequest, res: Response) => {
+    try {
+        return res.status(200).json(req.user)
+    } catch (error) {
+        console.error('Profile error:', error);
+        res.status(500).json({ error: 'Server error' });
+    }
+}

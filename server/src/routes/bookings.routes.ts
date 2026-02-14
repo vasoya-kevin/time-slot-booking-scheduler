@@ -1,11 +1,14 @@
-import { login, register } from '#controller/auth.controller.ts';
-import { validate } from '#middlewares/zod.middleware.ts';
-import { loginSchema, registerSchema } from '#validators/auth.validator.ts';
 import { Router } from 'express';
+import { validate } from '#middlewares/zod.middleware.ts';
+import { createBookingSchema, getBookingsByCodeSchema } from '#validators/booking.validator.ts';
+import { createBooking, getBookingsByLink } from '#controller/bookings.controller.ts';
 
 const router = Router();
 
-router.post('/register', validate(registerSchema), register);
-router.post('/login', validate(loginSchema), login);
+// Public routes (no authentication required)
+router.post('/:code', validate(createBookingSchema), createBooking);
+
+router.get('/:code', validate(getBookingsByCodeSchema), getBookingsByLink);
 
 export default router;
+

@@ -4,7 +4,8 @@ import { NextFunction, Request, Response } from "express"
 export interface AuthRequest extends Request {
     user?: {
         userId: number,
-        email: string
+        email: string,
+        name: string
     }
 }
 
@@ -21,7 +22,7 @@ export const authenticateToken = (
     }
 
     try {
-        const decoded = verifyJWT(token) as { userId: number; email: string };
+        const decoded = verifyJWT(token) as { userId: number; email: string, name: string };
 
         req.user = decoded;
         next();
